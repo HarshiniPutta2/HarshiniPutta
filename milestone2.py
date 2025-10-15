@@ -151,88 +151,7 @@ Use `pyannote.audio` to identify speaker turns and create segments with speaker 
 **Reasoning**:
 Import the Pipeline class and instantiate it for speaker diarization, then apply it to the processed audio data and print the result.
 """
-
-from pyannote.audio import Pipeline
-
-# Instantiate a Pipeline object for speaker diarization
-# You might need to authenticate with Hugging Face to download the model.
-# Visit https://huggingface.co/pyannote/speaker-diarization and follow the instructions.
-# For demonstration purposes, we are using a pre-trained model.
-pipeline = Pipeline.from_pretrained(
-    "pyannote/speaker-diarization",
-    use_auth_token=True)
-
-
-# Apply the instantiated pipeline to the processed audio data
-diarization = pipeline({"waveform": processed_audio_data, "sample_rate": processed_sampling_rate})
-
-# Print the diarization object to inspect the speaker segments and labels
-print(diarization)
-
-"""**Reasoning**:
-The error indicates that `use_auth_token` is not a valid argument for `Pipeline.from_pretrained`. This is likely due to a version mismatch or a change in the API. I will remove this argument and try again.
-
-
-"""
-
-from pyannote.audio import Pipeline
-
-# Instantiate a Pipeline object for speaker diarization
-# Using a pre-trained model. Authentication might be needed depending on the model.
-pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization")
-
-# Apply the instantiated pipeline to the processed audio data
-diarization = pipeline({"waveform": processed_audio_data, "sample_rate": processed_sampling_rate})
-
-# Print the diarization object to inspect the speaker segments and labels
-print(diarization)
-
-"""**Reasoning**:
-The error indicates that the model requires authentication from Hugging Face. I need to provide a token to access the model. I will add the `token` argument to `Pipeline.from_pretrained` with `True` which will attempt to use the `HF_TOKEN` environment variable.
-
-
-"""
-
-from pyannote.audio import Pipeline
-
-# Instantiate a Pipeline object for speaker diarization with authentication
-# This requires setting the HF_TOKEN environment variable with your Hugging Face token.
-# Visit https://hf.co/settings/tokens to create a token.
-pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization", use_auth_token=True)
-
-# Apply the instantiated pipeline to the processed audio data
-diarization = pipeline({"waveform": processed_audio_data, "sample_rate": processed_sampling_rate})
-
-# Print the diarization object to inspect the speaker segments and labels
-print(diarization)
-
-"""**Reasoning**:
-The error persists with `use_auth_token`. Looking at the previous error message, it suggested using `token` instead of `use_auth_token`. I will try that approach.
-
-
-"""
-
-from pyannote.audio import Pipeline
-
-# Instantiate a Pipeline object for speaker diarization with authentication
-# This requires setting the HF_TOKEN environment variable with your Hugging Face token.
-# Visit https://hf.co/settings/tokens to create a token.
-# Use the `token` argument instead of `use_auth_token`.
-pipeline = Pipeline.from_pretrained("pyannote/speaker-diarization", token=True)
-
-# Apply the instantiated pipeline to the processed audio data
-diarization = pipeline({"waveform": processed_audio_data, "sample_rate": processed_sampling_rate})
-
-# Print the diarization object to inspect the speaker segments and labels
-print(diarization)
-
-"""## Perform speaker diarization retry 1
-
-### Subtask:
-Retry performing speaker diarization using `pyannote.audio`, ensuring proper authentication to access the pre-trained model.
-
-**Reasoning**:
-Retry performing speaker diarization using `pyannote.audio`, ensuring proper authentication to access the pre-trained model by providing the Hugging Face token.
+y performing speaker diarization using `pyannote.audio`, ensuring proper authentication to access the pre-trained model by providing the Hugging Face token.
 """
 
 from pyannote.audio import Pipeline
@@ -708,27 +627,3 @@ print("-" * 50)
 # 5. Conclude by stating that while the evaluation process is understood, it cannot be performed in this specific execution environment.
 print("While we understand the process for evaluating summary quality using both automatic metrics like ROUGE and BLEU and human review, these evaluations cannot be performed in this specific execution environment due to the lack of necessary resources (reference summaries) and the nature of the interactive environment (inability to conduct human review).")
 
-"""## Summary:
-
-### Data Analysis Key Findings
-
-*   The installation of `pyannote.audio` and its dependencies was successful, as the required libraries were already present.
-*   The audio file provided was in MP3 format (`audio.mp3`) and needed to be converted to WAV format for processing.
-*   Resampling of the audio to 16kHz was performed successfully.
-*   Performing speaker diarization using `pyannote.audio` failed due to the inability to authenticate with Hugging Face to access the gated "pyannote/speaker-diarization" model, as a valid API token was not provided.
-*   Integrating the (unavailable) speaker segments with the STT output failed because the `diarization` object was missing.
-*   The step to format a sample diarized transcript string was successfully demonstrated, showing how speaker labels and words would be combined.
-*   Evaluating diarization quality using DER and summary quality using ROUGE/BLEU metrics and human review could not be performed due to the lack of the generated `diarization` object, reference summaries, and the inability to conduct human review within the environment.
-*   A Python function `perform_diarization` was successfully defined to encapsulate the diarization logic, although its execution was dependent on a valid Hugging Face token.
-*   The `groq` library was successfully installed for LLM-based summarization.
-*   The setup for the Groq summarization client failed because a valid Groq API key was not provided, preventing the client from being initialized.
-*   Prompt templates for general summary and action items were successfully designed and stored.
-*   A Python function `summarize_transcript` was successfully defined to interact with the Groq API, although its execution was dependent on an initialized Groq client.
-*   Generating sample summaries using the developed module was skipped because the Groq client was not initialized.
-
-### Insights or Next Steps
-
-*   To proceed with the diarization and summarization, it is crucial to provide valid Hugging Face and Groq API tokens. These tokens are necessary for accessing the pre-trained diarization model and the LLM summarization service, respectively.
-*   Once the API access is resolved, the subsequent steps involving diarization, integration with STT, summary generation, and evaluation can be fully executed and tested with actual outputs.
-
-"""
